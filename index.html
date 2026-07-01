@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Goal Setting Toolkit · DMUSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:       #2278b6;
+    --blue-light: #e8f2fa;
+    --blue-mid:   #c8dff2;
+    --dark:       #1a1a1a;
+    --gray:       #B7b7b7;
+    --gray-light: #f5f5f5;
+    --gray-mid:   #e8e8e8;
+    --text:       #2a2a2a;
+    --text-muted: #666;
+    --success:    #2e7d5e;
+    --warn:       #b45309;
+    --white:      #ffffff;
+    --radius:     6px;
+    --radius-lg:  10px;
+    --max:        860px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; color: var(--text); background: var(--white); }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .site-header { background: var(--blue); color: var(--white); padding: 28px 24px 24px; }
+  .site-header-inner { max-width: var(--max); margin: 0 auto; }
+  .site-header .district { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.75; margin-bottom: 6px; }
+  .site-header h1 { font-family: 'Dancing Script', cursive; font-size: 38px; font-weight: 700; line-height: 1.1; color: var(--white); margin-bottom: 10px; }
+  .site-header .intro { font-size: 14px; line-height: 1.6; opacity: 0.88; max-width: 560px; }
+
+  .page { max-width: var(--max); margin: 0 auto; padding: 0 24px 80px; }
+
+  .menu-section { padding: 40px 0 0; }
+  .menu-section h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+  .menu-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .menu-table thead th { background: var(--blue); color: var(--white); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; padding: 10px 14px; text-align: left; }
+  .menu-table thead th:last-child, .menu-table thead th:nth-child(2) { width: 110px; }
+  .menu-group td { background: var(--gray-light); font-size: 12px; font-weight: 600; font-style: italic; color: var(--text-muted); padding: 7px 14px; border-top: 1px solid var(--gray-mid); letter-spacing: 0.02em; }
+  .menu-table tbody tr.practice-row td { padding: 11px 14px; border-bottom: 1px solid var(--gray-mid); vertical-align: middle; }
+  .menu-table tbody tr.practice-row:hover td { background: var(--blue-light); }
+  .practice-link { color: var(--blue); font-weight: 500; cursor: pointer; }
+  .practice-link:hover { text-decoration: underline; }
+  .grade-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 20px; background: var(--blue-light); color: var(--blue); white-space: nowrap; }
+  .subject-tag { font-size: 12px; color: var(--text-muted); }
+
+  .section-block { margin-top: 56px; }
+  .section-block h2 { font-size: 20px; font-weight: 600; color: var(--blue); padding-bottom: 10px; border-bottom: 2px solid var(--blue); margin-bottom: 32px; }
+
+  .practice { margin-bottom: 48px; scroll-margin-top: 24px; }
+  .practice + .practice { padding-top: 40px; border-top: 1px solid var(--gray-mid); }
+  .practice-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .practice h3 { font-size: 22px; font-weight: 600; color: var(--dark); margin-bottom: 6px; line-height: 1.25; }
+  .practice .description { font-size: 14.5px; line-height: 1.72; color: var(--text); margin-bottom: 16px; max-width: 680px; }
+  .practice .description + .description { margin-top: -8px; }
+
+  .quote { display: flex; gap: 0; margin: 16px 0 20px; }
+  .quote-bar { width: 3px; background: var(--gray-mid); border-radius: 2px; flex-shrink: 0; }
+  .quote-body { padding: 2px 0 2px 14px; }
+  .quote-body p { font-size: 14px; font-style: italic; color: #555; line-height: 1.65; margin-bottom: 4px; }
+  .quote-body .attribution { font-size: 12px; color: var(--text-muted); font-style: normal; }
+
+  .works-box { border: 1px solid var(--gray-mid); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 20px; }
+  .works-box .box-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .works-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; line-height: 1.6; }
+  .works-item:last-child { margin-bottom: 0; }
+  .works-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .works-icon.check { color: var(--success); }
+  .works-icon.warn  { color: var(--warn); }
+
+  .tools-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .tool-item { background: var(--gray-light); border-radius: var(--radius); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; gap: 12px; }
+  .tool-info strong { display: block; font-size: 13.5px; font-weight: 600; color: var(--dark); margin-bottom: 1px; }
+  .tool-info span { font-size: 12px; color: var(--text-muted); }
+  .tool-link { font-size: 12.5px; font-weight: 500; color: var(--blue); white-space: nowrap; flex-shrink: 0; }
+  .tool-link:hover { text-decoration: underline; }
+  .tool-link.coming-soon { color: var(--gray); cursor: default; pointer-events: none; }
+  .tool-link.external { color: var(--blue); }
+
+  .start-small { background: var(--gray-light); border-radius: var(--radius); padding: 14px 16px; margin-top: 20px; }
+  .start-small .box-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .start-small p { font-size: 14px; line-height: 1.65; color: var(--dark); }
+
+  .back-top { display: inline-block; font-size: 12.5px; color: var(--text-muted); margin-top: 8px; cursor: pointer; }
+  .back-top:hover { color: var(--blue); }
+
+  .site-footer { background: var(--gray-light); border-top: 1px solid var(--gray-mid); padding: 24px; text-align: center; font-size: 12px; color: var(--text-muted); }
+
+  @media (max-width: 600px) {
+    .site-header h1 { font-size: 30px; }
+    .menu-table thead th:last-child, .menu-table thead th:nth-child(2) { display: none; }
+    .menu-table tbody tr.practice-row td:last-child, .menu-table tbody tr.practice-row td:nth-child(2) { display: none; }
+    .tool-item { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <p class="district">Del Mar Union School District</p>
+    <h1>Student Goal Setting Toolkit</h1>
+    <p class="intro">Practices from Del Mar classrooms — what teachers tried, what worked, and tools to use or adapt. Find a practice that fits where your students are, then click in for context and tools.</p>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="menu-section" id="menu">
+    <h2>Menu of Practices</h2>
+    <table class="menu-table">
+      <thead>
+        <tr>
+          <th>Practice</th>
+          <th>Grade Band</th>
+          <th>Subject</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="menu-group"><td colspan="3">Choosing and Reflecting on Goals</td></tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#supporting-independent">Supporting independent goal setting</a></td>
+          <td><span class="grade-tag">K–2</span></td>
+          <td class="subject-tag">Math</td>
+        </tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#clear-or-cloudy">Clear or Cloudy reflection routine</a></td>
+          <td><span class="grade-tag">3–4</span></td>
+          <td class="subject-tag">Any subject</td>
+        </tr>
+        <tr class="menu-group"><td colspan="3">Self-Assessment + Conference</td></tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#scaffolded-self-reflection">Scaffolded self reflection + conference</a></td>
+          <td><span class="grade-tag">K–2</span> <span class="grade-tag">3–4</span></td>
+          <td class="subject-tag">Writing</td>
+        </tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#self-directed-feedback">Self-directed feedback review + conference</a></td>
+          <td><span class="grade-tag">5–6</span></td>
+          <td class="subject-tag">Writing</td>
+        </tr>
+        <tr class="menu-group"><td colspan="3">Analyze Exemplars to Co-Create Success Criteria</td></tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#exemplars">Writing exemplars and success criteria</a></td>
+          <td><span class="grade-tag">5–6</span></td>
+          <td class="subject-tag">Writing</td>
+        </tr>
+        <tr class="menu-group"><td colspan="3">POL Reflection + Goal Setting</td></tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#pol-progressions">Using POL progressions to make real-world connections</a></td>
+          <td><span class="grade-tag">3–4</span></td>
+          <td class="subject-tag">POL / Any subject</td>
+        </tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#collaboration">Collaboration goals using a single-point rubric</a></td>
+          <td><span class="grade-tag">K–2</span></td>
+          <td class="subject-tag">Any subject</td>
+        </tr>
+        <tr class="menu-group"><td colspan="3">Trimester Reflection</td></tr>
+        <tr class="practice-row">
+          <td><a class="practice-link" href="#trimester">Trimester reflection</a></td>
+          <td><span class="grade-tag">K–6</span></td>
+          <td class="subject-tag">Any subject</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══ SECTION 1: Choosing and Reflecting on Goals ══ -->
+  <section class="section-block">
+    <h2>Choosing and Reflecting on Goals</h2>
+
+    <article class="practice" id="supporting-independent">
+      <div class="practice-meta">
+        <span class="grade-tag">K–2</span>
+        <span class="subject-tag">Math</span>
+      </div>
+      <h3>Supporting independent goal setting</h3>
+      <p class="description">Students are given a choice board with illustrated math goal options and student-friendly language. You read through the options together, and each student picks one that feels true for them right now. They record it by drawing or writing, then share it with a partner. Over time — across check-ins and brief conferences — students return to the goal and give examples of when they met it or name a strategy to get there. The goal isn't to get it right the first time; it's to build the habit of noticing and naming.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"Students were able to select a math goal more independently using the exemplars as a support. Some came up with their own goals outside of the ones I provided."</p>
+          <span class="attribution">1st grade teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Illustrated options lower the barrier to entry. Students who can't yet read independently can still participate meaningfully.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Goal-setting can evolve across the year — what requires scaffolding in fall can become genuinely student-driven by spring. Let the process grow.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Some students will pick randomly without connecting the goal to their actual learning. A quick partner share helps — if a student can't explain why they chose it, they probably need a different option.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Math goal choice board</strong><span>Visual goals menu with illustrated icons · 1st grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_82#slide=id.g3eace86dc85_0_82" target="_blank">View tool →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Student goal tracking sheet</strong><span>Draw or write · K–2</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_72#slide=id.g3eace86dc85_0_72" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Pick one subject area. Create three or four goal options with pictures and simple words. Ask students to circle or point to their goal. That's your first iteration.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+
+    <article class="practice" id="clear-or-cloudy">
+      <div class="practice-meta">
+        <span class="grade-tag">3–4</span>
+        <span class="subject-tag">Any subject</span>
+      </div>
+      <h3>Clear or Cloudy reflection routine</h3>
+      <p class="description">After a lesson or learning task, students use a simple two-column organizer — one side for what feels clear, one for what feels cloudy. It takes about five minutes. The goal isn't to surface everything; it's to help students locate themselves in their learning right now, and then write one goal based on what's still cloudy. Used regularly across subjects, it becomes a low-stakes habit of self-checking. It connects naturally to POL competencies and 2nd Step goal-setting lessons.</p>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>The metaphor travels across subjects without needing new vocabulary. Students can use the same language in math, writing, and science.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Doing this regularly — not just once — is what builds the habit. A one-time activity is not the same as a routine.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Goals written immediately after the reflection tend to stay vague. Build in one minute for students to share with a partner before writing — it sharpens what they name.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Clear or Cloudy organizer</strong><span>Two-column reflection + goal prompt · 3rd/4th grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_519#slide=id.g3eace86dc85_0_519" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Pose one question at the end of a lesson. Give students three minutes to fill in the organizer and write one goal. No conference needed yet — just let them name what's cloudy.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+  </section>
+
+  <!-- ══ SECTION 2: Self-Assessment + Conference ══ -->
+  <section class="section-block">
+    <h2>Self-Assessment + Conference</h2>
+
+    <article class="practice" id="scaffolded-self-reflection">
+      <div class="practice-meta">
+        <span class="grade-tag">K–2</span>
+        <span class="grade-tag">3–4</span>
+        <span class="subject-tag">Writing</span>
+      </div>
+      <h3>Scaffolded self reflection + conference</h3>
+      <p class="description">After students finish a processed piece of writing, they fill out a self-reflection sheet and sign up for a short conference. The self-reflection could be a checklist or a rubric — they mark places in their writing where they can show evidence of specific skills. During the conference, teacher and student look at the writing and the reflection together. If something is missing, you discuss it and set a goal. The student keeps the goal sheet in their writing folder; you keep a class copy to track at a glance.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"They liked being part of the conversation about their growth. It felt good to spend time with each student one on one about their learning."</p>
+          <span class="attribution">3rd grade teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Having students find and mark evidence in their own writing before the conference makes the conversation faster and more productive. You're responding to their thinking, not leading it.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Keeping a class copy alongside the student copy gives you a bird's-eye view without adding tracking work between conferences.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Some students will check everything off without actually looking at their writing. Ask them to point to a specific sentence that shows the skill before accepting any check.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Writing goal conference paper</strong><span>Student self-assessment + goal sheet · 3rd grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_183#slide=id.g3eace86dc85_0_183" target="_blank">View tool →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Student conference evaluation checklist</strong><span>Pre-conference self-check · 2nd grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3f2e5e2369a_0_19#slide=id.g3f2e5e2369a_0_19" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>After the next processed writing piece, ask students to read their work and mark two or three things they're proud of before the conference. Start there — the goal-setting follows naturally.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+
+    <article class="practice" id="self-directed-feedback">
+      <div class="practice-meta">
+        <span class="grade-tag">5–6</span>
+        <span class="subject-tag">Writing</span>
+      </div>
+      <h3>Self-directed feedback review + conference</h3>
+      <p class="description">Give students time with the rubric and feedback on a previous piece before starting a new one. They choose one thing to work on and mark it on the rubric. They hold on to it while drafting — it becomes the anchor for a short conference to review and discuss the new piece. In the conference you follow their lead, giving feedback based on what they decided to work on.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"When students set a clear goal for their own writing, they wrote with more clarity and purpose — and demonstrated growth and pride because they own the process."</p>
+          <span class="attribution">5th grade teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Feedback review happens before the new draft opens — not alongside it. Keeping those two moments separate matters.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>One goal, not a list. When students try to work on everything, nothing actually shifts.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Some students check things off without looking at their writing. Ask them to show you where in the piece they worked on their goal.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Narrative writing rubric — student version</strong><span>Self-assessment + goal-marking · 5th grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_711#slide=id.g3eace86dc85_0_711" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Before students start their next piece, hand them the rubric and their last feedback. Give them five minutes to read and mark one thing they want to work on. You don't need a conference yet — just see what they notice.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+  </section>
+
+  <!-- ══ SECTION 3: Analyze Exemplars ══ -->
+  <section class="section-block">
+    <h2>Analyze Exemplars to Co-Create Success Criteria</h2>
+
+    <article class="practice" id="exemplars">
+      <div class="practice-meta">
+        <span class="grade-tag">5–6</span>
+        <span class="subject-tag">Writing</span>
+      </div>
+      <h3>Writing exemplars and success criteria</h3>
+      <p class="description">Before writing, the class reads a strong example together and calls out what makes it work — clear ideas, strong evidence, voice, organization. You chart their thinking and help name those qualities as success criteria. Then students look at a developing example on the same topic and compare. Together they refine what quality looks like at different levels, and co-create a rubric from that conversation. Students use the rubric to plan, draft, revise, and give peer feedback. By the time they submit, they can explain how their writing meets the criteria — because they helped define them.</p>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>The co-creation step is what makes the rubric feel like theirs. A rubric handed to students is a checklist. A rubric they built is a standard they understand.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Using both a strong example and a developing one gives students the full range — not just a ceiling to aspire to, but a floor to push off from.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>This takes more up-front time than handing students a rubric. Plan for a full class session before writing begins. The payoff shows up in the quality of drafting and peer feedback.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Success criteria in speaking and listening</strong><span>Video example · YouTube</span></div>
+        <a class="tool-link external" href="https://www.youtube.com/watch?v=iplmRDoH0Gs" target="_blank">Watch →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Success criteria examples</strong><span>6 classroom examples · Tales from a Very Busy Teacher</span></div>
+        <a class="tool-link external" href="https://www.talesfromaverybusyteacher.com/2022/06/6-examples-of-success-criteria-to-use-in-your-classroom.html" target="_blank">Read →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Peer editing resource</strong><span>Framework for teaching peer editing · Edutopia</span></div>
+        <a class="tool-link external" href="https://www.edutopia.org/article/framework-teaching-students-how-peer-edit" target="_blank">Read →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Project one strong exemplar. Ask students to highlight or annotate one sentence that shows quality writing, then name what makes it strong. That conversation is the seed of the rubric.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+  </section>
+
+  <!-- ══ SECTION 4: POL ══ -->
+  <section class="section-block">
+    <h2>POL Reflection + Goal Setting</h2>
+
+    <article class="practice" id="pol-progressions">
+      <div class="practice-meta">
+        <span class="grade-tag">3–4</span>
+        <span class="subject-tag">POL / Any subject</span>
+      </div>
+      <h3>Using POL progressions to make real-world connections</h3>
+      <p class="description">Students use POL progressions written in student-friendly language to locate where they are in a specific competency. They highlight their current level, set a goal, and identify small action steps — connecting their goal to what's already happening in class and in their daily lives outside school. Evidence gets collected across the trimester and organized in a binder or digital portfolio divided by competency.</p>
+      <p class="description">Two things help make this real. First, you name and notice when competencies show up in the moment: "I noticed you were Adaptable when you worked to include others just now — I wonder how you might capture that in your binder." Second, students track everyday moments using a simple weekly planner, logging when they showed a competency at home or in the community and using AI to explore why it matters in the real world. This builds visibility: students stop seeing the competencies as abstract school values and start seeing them as things they're already doing and can keep growing in.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"Students have taken this on 100%. They have their goals open and are thinking about the actions they take daily that connect to their goal area. It's very hands-off from a teacher perspective."</p>
+          <span class="attribution">4th grade teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Student-friendly progression language is the key ingredient. When students can read where they are, they can self-assess without you interpreting it for them.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>Families responded strongly at conferences — not just to academic progress, but to seeing their child set goals and reflect as a lifelong skill.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>The binder system requires upfront setup and protected weekly time. Without consistent time to gather evidence and reflect, it becomes a collection folder rather than a living tool.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>POL reflection template</strong><span>Self-reflection + goal setting · 4th grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_510#slide=id.g3eace86dc85_0_510" target="_blank">View tool →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Weekly POL planner</strong><span>Daily log of POL moments + real-world connections · 4th grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_544#slide=id.g3eace86dc85_0_544" target="_blank">View tool →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>POL goal binder system — cover page + competency dividers</strong><span>Coming soon</span></div>
+        <span class="tool-link coming-soon">Coming soon</span>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Ideas for implementing POL competencies in daily lessons</strong><span>Coming soon</span></div>
+        <span class="tool-link coming-soon">Coming soon</span>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Ground the opening and closing of one lesson in a POL competency. Name it out loud, and ask students to notice when they're showing it. That's the first seed of the habit.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+
+    <article class="practice" id="collaboration">
+      <div class="practice-meta">
+        <span class="grade-tag">K–2</span>
+        <span class="subject-tag">Any subject</span>
+      </div>
+      <h3>Collaboration goals using a single-point rubric</h3>
+      <p class="description">Take one section of the collaboration rubric — just one — and use it as a single-point rubric for reflection after a collaborative task. Students look at the arrow scale (from "had trouble listening" to "listened to all speakers") and mark where their group was today. You debrief together: what did it look like when it went well? What got in the way? The goal isn't to grade the collaboration — it's to make the skill visible so students can name it, notice it, and set a specific next-step goal around it.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"Going slow and being more explicit in one area is powerful. It feels a lot more manageable to break this apart."</p>
+          <span class="attribution">Kindergarten teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>One section at a time is the move. Students understand a single-point rubric far better than the full rubric all at once — and can actually use it to reflect.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>The arrow scale format gives students a concrete continuum instead of a vague label. They can place themselves on it without having to interpret levels.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Without examples and non-examples beforehand, students self-rate inaccurately in both directions. Spend time discussing what each end of the scale actually looks like before asking them to use it.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>K–2 collaboration rubric (full version)</strong><span>For reference and classroom use · K–2</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_0#slide=id.g3eace86dc85_0_0" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>After any collaborative task this week, project one arrow scale from the rubric. Rate together as a class first — whole group — before asking students to rate themselves.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+  </section>
+
+  <!-- ══ SECTION 5: Trimester Reflection ══ -->
+  <section class="section-block">
+    <h2>Trimester Reflection</h2>
+
+    <article class="practice" id="trimester">
+      <div class="practice-meta">
+        <span class="grade-tag">K–6</span>
+        <span class="subject-tag">Any subject</span>
+      </div>
+      <h3>Trimester reflection</h3>
+      <p class="description">At the end of a trimester, students take stock of how they're doing across academic areas and any other areas that matter to them. They name what they're genuinely proud of (glows), what they want to work on (grows), and write two goals with specific next steps for each. This can happen in slides — where each prompt gets its own page and students write or type their responses — or using a structured table that fits on one sheet.</p>
+      <p class="description">However it's structured, the reflection becomes the anchor for parent conferences. The student's voice leads the conversation; parents receive the reflection to take home and continue the discussion. The teacher's role shifts from delivering a report to facilitating a conversation the student already started.</p>
+      <div class="quote">
+        <div class="quote-bar"></div>
+        <div class="quote-body">
+          <p>"The student's voice was heard in the conference. Parents felt their students had choice and a space to advocate for their own learning."</p>
+          <span class="attribution">4th grade teacher</span>
+        </div>
+      </div>
+      <div class="works-box">
+        <p class="box-label">What makes it work</p>
+        <div class="works-item"><span class="works-icon check">✓</span><span>When students go into a conference with a reflection already in hand, the conversation is more productive from the start. They're sharing what they think — you're responding to it.</span></div>
+        <div class="works-item"><span class="works-icon check">✓</span><span>The next steps section is what separates a reflection from a goal. Build in time for students to write at least one specific action, not just a wish.</span></div>
+        <div class="works-item"><span class="works-icon warn">⚠</span><span>Without a model, students write glows that are generic and grows that are vague. Show two or three strong examples before students start writing.</span></div>
+      </div>
+      <p class="tools-label">Tools to use or adapt</p>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Trimester self-reflection table</strong><span>One-page written reflection + goal setting · 3rd/4th grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_499#slide=id.g3eace86dc85_0_499" target="_blank">View tool →</a>
+      </div>
+      <div class="tool-item">
+        <div class="tool-info"><strong>Grows and Glows reflection slideshow</strong><span>Student-facing slide template · 2nd grade</span></div>
+        <a class="tool-link" href="https://docs.google.com/presentation/d/1WbT6lZ3laLsD9dbS5mq7X6__0wW53CNYNR5dF4UYMH8/edit?slide=id.g3eace86dc85_0_385#slide=id.g3eace86dc85_0_385" target="_blank">View tool →</a>
+      </div>
+      <div class="start-small">
+        <p class="box-label">Start small next week</p>
+        <p>Before the end of this trimester, give students five minutes to write one glow, one grow, and one goal. Share in pairs. That small version is enough to start.</p>
+      </div>
+      <a class="back-top" href="#menu">↑ Back to menu</a>
+    </article>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Del Mar Union School District · Student Goal Setting Toolkit · Learner-Centered Collaborative 2025
+</footer>
+
+</body>
+</html>
